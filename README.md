@@ -6,7 +6,7 @@
 
 ## 作业要求
 
-![image-20230627155803262](fig\require.png)
+![image-20230627155803262](fig/require.png)
 
 ## Example
 
