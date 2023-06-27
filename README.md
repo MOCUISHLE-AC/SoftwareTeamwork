@@ -6,7 +6,7 @@
 
 ## 作业要求
 
-![image-20230627155803262](C:\Users\LHA\AppData\Roaming\Typora\typora-user-images\image-20230627155803262.png)
+![image-20230627155803262](fig\require.png)
 
 ## Example
 
