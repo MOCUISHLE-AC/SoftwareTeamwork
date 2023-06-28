@@ -12,6 +12,10 @@ void save_to_txt(ofstream &file, char** x, bool space)
 		for(int j = 0;j < 9; j++)
 		{
 			file<<x[i][j];
+			if(j != 8)
+			{
+				file<<" ";
+			}
 		}
 		file<<endl;
 	}
