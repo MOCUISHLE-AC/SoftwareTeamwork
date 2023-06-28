@@ -1,211 +1,71 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <ctime>
+#include "sudoku.h"
+#include "getdata.h"
+#include "savetxt.h"
 using namespace std;
 
-class Sudoku {	
-public:
-	//´ð°¸
-	char** answer;
-	//ÌâÄ¿
-	char** question;
-	//ÊÇ·ñºÏ·¨
-	bool isLegal = false;
-	//³õÊ¼»¯
-	Sudoku();
-	Sudoku(char** board);
-	//½âÊý¶À
-	bool SolveDfs(int layer,char** temp);
-	//´òÓ¡
-	void PrintBoard(char** board);
-	//¼ìÑéº¯Êý
-	bool validate(char** board, int row, int col, char num);
-	//´´½¨Êý¶À£¨Í¨¹ý½»»»£©
-	void CreatBoard(char** board,int SwapTimes=10, int BlankNUM = 20);
-};
-
-Sudoku::Sudoku()
+int main(int argc, char** argv)
 {
-	question = new char* [9];
-	answer = new char* [9];
-	for (int i = 0; i < 9; i++)
+	if(argc == 1)
 	{
-		question[i] = new char[9];
-		answer[i] = new char[9];
-	}
-	for (int i = 0; i < 9; i++)
-		for (int j = 0; j < 9; j++)
-			question[i][j] = '$';
-	memcpy(answer, question, 81);
-	//³õÊ¼»¯Ò»¸öÓÐ½âµÄÊý×é
-	SolveDfs(0, question);
-	PrintBoard(question);
-	//¶ÔÆä½øÐÐ½»»»ºÍÍÚ¿Õ
-	CreatBoard(question,10,20);
-	//¶Ôanswer½øÐÐ³õÊ¼»¯
-	memcpy(answer, question, 81);
-}
-
-Sudoku::Sudoku(char** board)
-{
-	question = new char* [9];
-	answer = new char* [9];
-	for (int i = 0; i < 9; i++)
-	{
-		question[i] = new char[9];
-		answer[i] = new char[9];
-	}
-	memcpy(question, board, 81);
-	//¶Ôanswer½øÐÐ³õÊ¼»¯
-	memcpy(answer, question, 81);
-}
-
-bool Sudoku::validate(char** board, int row, int col, char num)
-{
-	//¼ì²éÐÐÊÇ·ñÖØ¸´
-	for (int i = 0; i < 9; i++)
-	{
-		if (board[row][i] == num)
-			return false;
-	}
-	//¼ì²éÁÐÊÇ·ñÖØ¸´
-	for (int j = 0; j < 9; j++)
-	{
-		if (board[j][col] == num)
-			return false;
-	}
-	//¼ì²é¹¬ÄÚÊÇ·ñÖØ¸´
-	//9 3*3
-	int x = row / 3;
-	int y = col / 3;
-	for (int i = 3 * x; i < 3 * x + 3; i++)
-		for (int j = 3 * y; j < 3 * y + 3; j++)
+		//è‡ªåŠ¨ç”Ÿæˆæ•°ç‹¬æµ‹è¯•
+		Sudoku test;
+		cout << "ç”Ÿæˆçš„æ•°ç‹¬å¦‚ä¸‹æ‰€ç¤ºï¼š" << endl;
+		test.PrintBoard(test.question);
+		cout << "ç­”æ¡ˆå¦‚ä¸‹ï¼š" << endl;
+		bool flag = test.SolveDfs(0, test.answer);
+		if (flag)
 		{
-			if (num == board[i][j])
-				return false;
+			test.PrintBoard(test.answer);
 		}
-	return true;
-}
-
-bool Sudoku::SolveDfs(int layer, char** board)
-{
-	bool flag = false;
-	//ÒÑ¾­½âÍê
-	if (layer == 81)
-		return true;
-	else 
-	{
-		//µ±Ç°Î»ÖÃ
-		int x = layer / 9;
-		int y = layer % 9;
-		if (board[x][y] == '$')
+		else
 		{
-			for (int solve = 1; solve <= 9; solve++)
+			cout << "æ— è§£" << endl;
+		}
+	}
+	else if(argc == 3)
+	{
+		if(strcmp(argv[1], "-c") == 0) 
+		{
+			int t_num = get_num(argv[2], argv[1]);
+			if(t_num == -1)
 			{
-				if (validate(board, x, y, solve + '0'))
+				return 0;
+			}
+			else
+			{
+				ofstream mytxt("final.txt");
+				Sudoku tmp(0, 0);
+				for(int i = 0;i < t_num; i++)
 				{
-					board[x][y] = solve + '0';
-					flag = SolveDfs(layer + 1, board);
-					//»ØËÝ
-					if (!flag)
+					tmp.CreatBoard(tmp.answer,2 * t_num + 1,0);
+					/*if(i != 0)
 					{
-						board[x][y] = '$';
+						mytxt<<endl;
+					}
+					for(int i = 0;i < 9; i++)
+					{
+						for(int j = 0;j < 9; j++)
+						{
+							mytxt<<tmp.answer[i][j];
+						}
+						mytxt<<endl;
+					}*/
+					if(i == 0)
+					{
+						save_to_txt(mytxt, tmp.answer, false);
+					}
+					else
+					{
+						save_to_txt(mytxt, tmp.answer, true);
 					}
 				}
+				mytxt.close();
 			}
 		}
-		//µ±Ç°Î»ÖÃÒÑ¾­¸øºÃ
-		else
-		{
-			flag = SolveDfs(layer + 1, board);
-		}
-		return flag;
-	}
-}
-
-/*
-	¸ù¾ÝÊý¶ÀµÄÌØÐÔ£¬ÔÚÍ¬Ò»¸öÐ¡¾Å¹¬¸ñÖÐµÄÐÐºÍÐÐÖ®¼ä½»»»Î»ÖÃ£¬ÁÐÓëÁÐÖ®¼ä½»»»Î»ÖÃ£¬Êý¶ÀÒÀÈ»³ÉÁ¢
-*/
-void Sudoku::CreatBoard(char** board, int SwapTimes,int BlankNUM)
-{
-	//Ð¡¾Å¹¬¸ñÖÐµÄÐÐºÍÁÐ½»»»£¬ÓÐÒÔÏÂ£¹ÖÖ½»»»·½Ê½
-	int choices[9][2] = { {0,1},{0,2},{1,2},{3,4},{3,5},{4,5},{6,7},{6,8},{7,8} };
-	srand(time(NULL));//ÉèÖÃ¶¯Ì¬ÖÖ×Ó
-	for (int time = 0; time < SwapTimes; time++)
-	{
-		//Ñ¡È¡½»»»·½Ê½
-		int choice = rand() % 9;
-		//ÐÐ½»»»
-		int row1 = choices[choice][0];
-		int row2 = choices[choice][1];
-		for (int i = 0; i < 9; i++)
-		{
-			char temp = board[row1][i];
-			board[row1][i] = board[row2][i];
-			board[row2][i] = temp;
-		}
-		//ÁÐ½»»»
-		int col1 = choices[choice][0];
-		int col2 = choices[choice][1];
-		for (int i = 0; i < 9; i++)
-		{
-			char temp = board[i][col1];
-			board[i][col1] = board[i][col2];
-			board[i][col2] = temp;
-		}
-		cout << "½»»»µÄÐÐ£¨ÁÐ£©ÏÂ±ê:" << row1 << " " << row2 << endl;
-		PrintBoard(board);
-	}
-	//Ëæ»úÍÚ¿Õ
-	for (int i = 0; i < BlankNUM; i++)
-	{
-		int row = rand() % 9;
-		int col = rand() % 9;
-		if (board[row][col] != '$')
-		{
-			board[row][col] = '$';
-		}
-		else
-		{
-			//ÖØÐÂÍÚ¿Õ
-			i--;
-		}
-	}
-}
-
-void Sudoku::PrintBoard(char** board)
-{
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			cout << board[i][j] << " ";
-		}
-		cout << endl;
-	}
-	cout << endl;
-}
-
-int main()
-{
-	//×Ô¶¯Éú³ÉÊý¶À²âÊÔ
-	Sudoku test;
-	cout << "Éú³ÉµÄÊý¶ÀÈçÏÂËùÊ¾£º" << endl;
-	test.PrintBoard(test.question);
-	cout << "´ð°¸ÈçÏÂ£º" << endl;
-	bool flag = test.SolveDfs(0, test.answer);
-	if (flag)
-	{
-		test.PrintBoard(test.answer);
-	}
-	else
-	{
-		cout << "ÎÞ½â" << endl;
 	}
 
-	//ÊÖ¶¯ÊäÈë²âÊÔ
-	char** test2;
+	//æ‰‹åŠ¨è¾“å…¥æµ‹è¯•
+	/*char** test2;
 	test2 = new char* [9];
 	for (int i = 0; i < 9; i++)
 	{
@@ -215,9 +75,11 @@ int main()
 		for (int j = 0; j < 9; j++)
 			cin >> test2[i][j];
 	Sudoku newtest(test2);
-	cout << "Êý¶ÀÈçÏÂËùÊ¾£º" << endl;
+	cout << "æ•°ç‹¬å¦‚ä¸‹æ‰€ç¤ºï¼š" << endl;
 	newtest.PrintBoard(newtest.question);
 	newtest.SolveDfs(0, newtest.answer);
-	cout << "´ð°¸ÈçÏÂ£º" << endl;
-	newtest.PrintBoard(newtest.question);
+	cout << "ç­”æ¡ˆå¦‚ä¸‹ï¼š" << endl;
+	newtest.PrintBoard(newtest.question);*/
+	system("pause");
+	return 0;
 }
