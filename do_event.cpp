@@ -4,13 +4,13 @@
 #include "do_event.h"
 using namespace std;
 
-void zero_event()
+bool zero_event()
 {
-	//×Ô¶¯Éú³ÉÊı¶À²âÊÔ
+	//è‡ªåŠ¨ç”Ÿæˆæ•°ç‹¬æµ‹è¯•
 	Sudoku test(10, 20);
-	cout << "Éú³ÉµÄÊı¶ÀÈçÏÂËùÊ¾£º" << endl;
+	cout << "ç”Ÿæˆçš„æ•°ç‹¬å¦‚ä¸‹æ‰€ç¤ºï¼š" << endl;
 	test.PrintBoard(test.question);
-	cout << "´ğ°¸ÈçÏÂ£º" << endl;
+	cout << "ç­”æ¡ˆå¦‚ä¸‹ï¼š" << endl;
 	bool flag = test.InitSolveDfs(0, test.answer);
 	if (flag)
 	{
@@ -18,20 +18,22 @@ void zero_event()
 	}
 	else
 	{
-		cout << "ÎŞ½â" << endl;
+		cout << "æ— è§£" << endl;
 	}
+	return true;
 }
 
-void c_event(char* x)
+bool c_event(char* x)
 {
 	int t_num = get_num(x, "-c");
 	if(t_num == -1)
 	{
-		return;
+		return false;
 	}
 	if(t_num > 1000000)
 	{
-		cout<<"²ÎÊı¹ı´ó!"<<endl;
+		cout<<"å‚æ•°è¿‡å¤§!"<<endl;
+		return false;
 	}
 	else
 	{
@@ -55,24 +57,24 @@ void c_event(char* x)
 		}
 		mytxt.close();
 	}
-	cout<<t_num<<"×éÊı¶ÀÖÕ¾ÖÒÑ¾­È«²¿Éú³É£¬±£´æÔÚfinal.txtÖĞ£¡"<<endl;
-	return;
+	cout<<t_num<<"ç»„æ•°ç‹¬ç»ˆå±€å·²ç»å…¨éƒ¨ç”Ÿæˆï¼Œä¿å­˜åœ¨final.txtä¸­ï¼"<<endl;
+	return true;
 }
 
-void s_event(char* x)
+bool s_event(char* x)
 {
 	string t_x = x;
 	int judge_num = t_x.length();
-	if((x[judge_num - 4] != '.') && (x[judge_num - 3] != 't') && (x[judge_num - 2] != 'x') && (x[judge_num - 1] != 't'))
+	if((x[judge_num - 4] != '.') || (x[judge_num - 3] != 't') || (x[judge_num - 2] != 'x') || (x[judge_num - 1] != 't'))
 	{
-		cout<<"Ä¿±êÎÄ¼ş²»ÊÇtxtÎÄ¼ş£¡"<<endl;
-		return;
+		cout<<"ç›®æ ‡æ–‡ä»¶ä¸æ˜¯txtæ–‡ä»¶ï¼"<<endl;
+		return false;
 	}
 	ifstream gettxt(x);
 	if(!gettxt.good())
 	{
-		cout<<"Ã»ÓĞÕÒµ½Ä¿±êÎÄ¼ş£¡"<<endl;
-		return;
+		cout<<"æ²¡æœ‰æ‰¾åˆ°ç›®æ ‡æ–‡ä»¶ï¼"<<endl;
+		return false;
 	}
 
 	string line;
@@ -87,6 +89,7 @@ void s_event(char* x)
 	int space_flag = 0;
 	int times = 1;
 	Sudoku tmp;
+	int flag = 0;
 	while(!gettxt.eof())
 	{
 		getline(gettxt, line);
@@ -96,6 +99,7 @@ void s_event(char* x)
 		}
 		else
 		{
+			flag++;
 			int t_count = 0;
 			for(int i = 0;i < line.length(); i++)
 			{
@@ -105,6 +109,11 @@ void s_event(char* x)
 				}
 				if(line[i] != ' ')
 				{
+					if(((line[i] < '0') || (line[i] > '9')) && (line[i] != '$'))
+					{
+						cout<<"æ–‡ä»¶æ•°ç‹¬æ ¼å¼æœ‰è¯¯ï¼"<<endl;
+						return false;
+					}
 					t_sudoku[sudoku_count][t_count++] = line[i];
 				}
 			}
@@ -126,26 +135,32 @@ void s_event(char* x)
 			}
 		}
 	}
+	if(flag == 0)
+	{
+		cout<<"æ–‡ä»¶ä¸ºç©ºï¼"<<endl;
+		return false;
+	}
 	mytxt.close();
 	gettxt.close();
-	cout<<"Êı¶ÀÒÑ¾­È«²¿¶ÁÈ¡£¬½â´ğ±£´æÔÚsudoku.txtÖĞ£¡"<<endl;
-	return;
+	cout<<"æ•°ç‹¬å·²ç»å…¨éƒ¨è¯»å–ï¼Œè§£ç­”ä¿å­˜åœ¨sudoku.txtä¸­ï¼"<<endl;
+	return true;
 }
 
-void n_event(char* x)
+bool n_event(char* x)
 {
 	int t_num = get_num(x, "-n");
 	if(t_num == -1)
 	{
-		return;
+		return false;
 	}
-	if(t_num > 100000)
+	if(t_num > 10000)
 	{
-		cout<<"²ÎÊı¹ı´ó!"<<endl;
+		cout<<"å‚æ•°è¿‡å¤§!"<<endl;
+		return false;
 	}
 	else
 	{
-		cout<<"ÕıÔÚÉú³ÉÊı¶ÀÓÎÏ·..."<<endl;
+		cout<<"æ­£åœ¨ç”Ÿæˆæ•°ç‹¬æ¸¸æˆ..."<<endl;
 		ofstream mytxt("game.txt");
 		Sudoku tmp(0, 0);
 		default_random_engine e;
@@ -169,26 +184,26 @@ void n_event(char* x)
 		}
 		mytxt.close();
 	}
-	cout<<t_num<<"×éÊı¶ÀÓÎÏ·ÒÑ¾­È«²¿Éú³É£¬±£´æÔÚgame.txtÖĞ£¡"<<endl;
-	return;
+	cout<<t_num<<"ç»„æ•°ç‹¬æ¸¸æˆå·²ç»å…¨éƒ¨ç”Ÿæˆï¼Œä¿å­˜åœ¨game.txtä¸­ï¼"<<endl;
+	return true;
 }
 
-void n_m_event(char* x, char* y)
+bool n_m_event(char* x, char* y)
 {
 	int t_num = get_num(x, "-n");
 	if(t_num == -1)
 	{
-		return;
+		return false;
 	}
 	int t_level = get_num(y, "-m");
 	if((t_level != 1) && (t_level != 2) && (t_level != 3))
 	{
-		cout<<"ÄÑ¶ÈÖ»ÄÜÎª1,2,3£¡"<<endl;
-		return;
+		cout<<"éš¾åº¦åªèƒ½ä¸º1,2,3ï¼"<<endl;
+		return false;
 	}
 	else
 	{
-		cout<<"ÕıÔÚÉú³ÉÄÑ¶ÈÎª"<<t_level<<"µÄÊı¶ÀÓÎÏ·..."<<endl;
+		cout<<"æ­£åœ¨ç”Ÿæˆéš¾åº¦ä¸º"<<t_level<<"çš„æ•°ç‹¬æ¸¸æˆ..."<<endl;
 		int swaptemp;
 		int blanktemp;
 		ofstream mytxt("game.txt");
@@ -257,30 +272,81 @@ void n_m_event(char* x, char* y)
 		}
 		mytxt.close();
 	}
-	cout<<t_num<<"×éÊı¶ÀÓÎÏ·ÒÑ¾­È«²¿Éú³É£¬±£´æÔÚgame.txtÖĞ£¡"<<endl;
-	return;
+	cout<<t_num<<"ç»„æ•°ç‹¬æ¸¸æˆå·²ç»å…¨éƒ¨ç”Ÿæˆï¼Œä¿å­˜åœ¨game.txtä¸­ï¼"<<endl;
+	return true;
 }
 
-void n_r_event(char* x, char* y)
+bool n_r_event(char* x, char* y)
 {
 	int t_num = get_num(x, "-n");
 	if(t_num == -1)
 	{
-		return;
+		return false;
 	}
-	char *y1, *y2;
-	y1 = strtok(y, "~");
-	y2 = strtok(NULL, "~");
+	string t = y;
+	char y1[10] = "";
+	char y2[10] = "";
+	int count = 0;
+	int flag = 0;
+	for(int i = 0;i < t.length();i++)
+	{
+		if(t[i] == '~')
+		{
+			if((flag != 0) || (count == 0))
+			{
+				cout<<"å‚æ•°é”™è¯¯ï¼"<<endl;
+				return false;
+			}
+			else
+			{
+				y1[count] = '\0';
+				count = 0;
+				flag++;
+				continue;
+			}
+		}
+		if(flag == 0)
+		{
+			if(count >= 2)
+			{
+				cout<<"å‚æ•°é”™è¯¯ï¼"<<endl;
+				return false;
+			}
+			y1[count++] = t[i];
+		}
+		else
+		{
+			if(count >= 2)
+			{
+				cout<<"å‚æ•°é”™è¯¯ï¼"<<endl;
+				return false;
+			}
+			y2[count++] = t[i];
+		}
+		if(i == t.length() - 1)
+		{
+			if((flag == 0) || (count == 0))
+			{
+				cout<<"å‚æ•°é”™è¯¯ï¼"<<endl;
+				return false;
+			}
+			y2[count] = '\0';
+		}
+	}
+	/*char *y1, *y2;
+	char* ptr = NULL;
+	y1 = strtok_s(y, "~", &ptr);
+	y2 = strtok_s(NULL, "~", &ptr);*/
 	int t_low = get_num(y1, "-r");
 	int t_high = get_num(y2, "-r");
 	if((t_low < 20) || (t_high > 55) || (t_low > t_high))
 	{
-		cout<<"ÍÚ¿ÕÊı·¶Î§Ó¦ÔÚ20~55Ö®¼ä£¡"<<endl;
-		return;
+		cout<<"æŒ–ç©ºæ•°èŒƒå›´åº”åœ¨20~55ä¹‹é—´ï¼"<<endl;
+		return false;
 	}
 	else
 	{
-		cout<<"ÕıÔÚÉú³ÉÍÚ¿ÕÊıÔÚ"<<t_low<<"~"<<t_high<<"Ö®¼äµÄÊı¶ÀÓÎÏ·..."<<endl;
+		cout<<"æ­£åœ¨ç”ŸæˆæŒ–ç©ºæ•°åœ¨"<<t_low<<"~"<<t_high<<"ä¹‹é—´çš„æ•°ç‹¬æ¸¸æˆ..."<<endl;
 		ofstream mytxt("game.txt");
 		Sudoku tmp(0, 0);
 		default_random_engine e;
@@ -304,24 +370,25 @@ void n_r_event(char* x, char* y)
 		}
 		mytxt.close();
 	}
-	cout<<t_num<<"×éÊı¶ÀÓÎÏ·ÒÑ¾­È«²¿Éú³É£¬±£´æÔÚgame.txtÖĞ£¡"<<endl;
-	return;
+	cout<<t_num<<"ç»„æ•°ç‹¬æ¸¸æˆå·²ç»å…¨éƒ¨ç”Ÿæˆï¼Œä¿å­˜åœ¨game.txtä¸­ï¼"<<endl;
+	return true;
 }
 
-void n_u_event(char* x)
+bool n_u_event(char* x)
 {
 	int t_num = get_num(x, "-n");
 	if(t_num == -1)
 	{
-		return;
+		return false;
 	}
 	if(t_num > 100000)
 	{
-		cout<<"²ÎÊı¹ı´ó!"<<endl;
+		cout<<"å‚æ•°è¿‡å¤§!"<<endl;
+		return false;
 	}
 	else
 	{
-		cout<<"ÕıÔÚÉú³É½â·¨Î¨Ò»µÄÊı¶ÀÓÎÏ·..."<<endl;
+		cout<<"æ­£åœ¨ç”Ÿæˆè§£æ³•å”¯ä¸€çš„æ•°ç‹¬æ¸¸æˆ..."<<endl;
 		ofstream mytxt("game.txt");
 		Sudoku tmp(0, 0);
 		default_random_engine e;
@@ -365,6 +432,6 @@ void n_u_event(char* x)
 		}
 		mytxt.close();
 	}
-	cout<<t_num<<"×éÊı¶ÀÓÎÏ·ÒÑ¾­È«²¿Éú³É£¬±£´æÔÚgame.txtÖĞ£¡"<<endl;
-	return;
+	cout<<t_num<<"ç»„æ•°ç‹¬æ¸¸æˆå·²ç»å…¨éƒ¨ç”Ÿæˆï¼Œä¿å­˜åœ¨game.txtä¸­ï¼"<<endl;
+	return true;
 }
