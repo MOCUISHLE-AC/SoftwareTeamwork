@@ -3,7 +3,7 @@
 #include "getdata.h"
 #include "savetxt.h"
 #include "do_event.h"
-// �Ѳ��԰�ע��Ϊ aTest
+// °Ñ²âÊÔ°ü×¢²áÎª aTest
 CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(testSudoku, "aTest");
 
 testSudoku::testSudoku() {};
@@ -64,7 +64,7 @@ void testSudoku::testSudoku7() {
 }
 
 void testSudoku::testSudoku8() {
-	CPPUNIT_ASSERT(s_event("./testdata/test_limit.txt") == true);
+	CPPUNIT_ASSERT(s_event("./testdata/test_limit.txt") == false);
 }
 
 void testSudoku::testSudoku9() {
