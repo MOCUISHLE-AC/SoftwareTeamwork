@@ -50,7 +50,7 @@ testSudoku::testSudoku7test begin
 test end
  : OK
 testSudoku::testSudoku8test begin
-数独已经全部读取，解答保存在sudoku.txt中！
+文件数独格式有误！
 test end
  : OK
 testSudoku::testSudoku9test begin
