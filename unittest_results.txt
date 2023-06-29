@@ -1,0 +1,64 @@
+testSudoku::testSudoku1test begin
+20组数独终局已经全部生成，保存在final.txt中！
+数独已经全部读取，解答保存在sudoku.txt中！
+正在生成数独游戏...
+1000组数独游戏已经全部生成，保存在game.txt中！
+正在生成难度为1的数独游戏...
+1000组数独游戏已经全部生成，保存在game.txt中！
+正在生成挖空数在20~55之间的数独游戏...
+10组数独游戏已经全部生成，保存在game.txt中！
+正在生成解法唯一的数独游戏...
+20组数独游戏已经全部生成，保存在game.txt中！
+test end
+ : OK
+testSudoku::testSudoku2test begin
+参数过大!
+参数过大!
+难度只能为1,2,3！
+挖空数范围应在20~55之间！
+test end
+ : OK
+testSudoku::testSudoku3test begin
+invalid parameters after '-c' !
+没有找到目标文件！
+目标文件不是txt文件！
+invalid parameters after '-n' !
+invalid parameters after '-n' !
+invalid parameters after '-m' !
+难度只能为1,2,3！
+invalid parameters after '-r' !
+挖空数范围应在20~55之间！
+invalid parameters after '-n' !
+test end
+ : OK
+testSudoku::testSudoku4test begin
+数独已经全部读取，解答保存在sudoku.txt中！
+test end
+ : OK
+testSudoku::testSudoku5test begin
+数独已经全部读取，解答保存在sudoku.txt中！
+test end
+ : OK
+testSudoku::testSudoku6test begin
+数独已经全部读取，解答保存在sudoku.txt中！
+数独已经全部读取，解答保存在sudoku.txt中！
+数独已经全部读取，解答保存在sudoku.txt中！
+test end
+ : OK
+testSudoku::testSudoku7test begin
+数独已经全部读取，解答保存在sudoku.txt中！
+test end
+ : OK
+testSudoku::testSudoku8test begin
+数独已经全部读取，解答保存在sudoku.txt中！
+test end
+ : OK
+testSudoku::testSudoku9test begin
+数独已经全部读取，解答保存在sudoku.txt中！
+test end
+ : OK
+testSudoku::testSudoku10test begin
+文件为空！
+test end
+ : OK
+OK (10)
